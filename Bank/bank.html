@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Terminal</title>
+<style>
+    body {
+        background-color: #0a0a0a;
+        color: #00ff9c;
+        font-family: "Courier New", monospace;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px;
+    }
+
+    .terminal {
+        width: 90%;
+        max-width: 700px;
+        background: #111;
+        border-radius: 10px;
+        padding: 20px;
+        border: 1px solid #00ff7f44;
+        box-shadow: 0 0 22px #00ff7f22;
+    }
+
+    .terminal h2 {
+        margin-top: 0;
+        color: #00ff9c;
+    }
+
+    .input-section {
+        display: flex;
+        gap: 10px;
+        margin: 15px 0;
+        flex-wrap: wrap;
+    }
+
+    input {
+        flex: 1;
+        min-width: 200px;
+        background: black;
+        border: 1px solid #00ff9c;
+        color: #00ff9c;
+        font-family: inherit;
+        font-size: 1em;
+        padding: 10px;
+        border-radius: 5px;
+        outline: none;
+        box-sizing: border-box;
+    }
+
+    input:focus {
+        box-shadow: 0 0 10px #00ff9c;
+    }
+
+    .output {
+        margin-top: 20px;
+        padding: 15px;
+        border-top: 1px solid #00ff9c;
+        min-height: 50px;
+    }
+
+    /* Product Card - Side by Side Layout */
+    .product-card {
+        background: #12121a;
+        border-radius: 12px;
+        border: 1px solid rgba(0, 255, 127, 0.3);
+        box-shadow: 0 0 15px rgba(0, 255, 127, 0.15);
+        padding: 12px;
+        display: flex;
+        gap: 15px;
+        align-items: flex-start;
+        transition: all 0.3s ease;
+    }
+
+    .product-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 0 25px rgba(0, 255, 127, 0.3);
+        border-color: rgba(0, 255, 127, 0.6);
+    }
+
+    .product-img-container {
+        flex-shrink: 0;
+    }
+
+    .product-img {
+        width: 140px;
+        height: 140px;
+        border-radius: 8px;
+        object-fit: cover;
+        border: 1px solid #00ff7f44;
+        box-shadow: 0 0 10px #00ff7f22;
+    }
+
+    .product-info {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        flex: 1;
+    }
+
+    .product-title h3 {
+        font-size: 1.1em;
+        color: #00ff9c;
+        margin: 0;
+        min-height: 1.3em;
+    }
+
+    .product-details {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .price {
+        font-weight: bold;
+        color: #00ff7f;
+        font-size: 0.95em;
+        min-height: 1.2em;
+    }
+
+    .product-id {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #888;
+        font-size: 0.9em;
+        min-height: 1.2em;
+    }
+
+    .copy-icon {
+        cursor: pointer;
+        color: #00ff7f;
+        transition: 0.2s;
+    }
+
+    .copy-icon:hover {
+        color: #00ffff;
+    }
+
+    .buttons {
+        display: flex;
+        gap: 8px;
+        margin-top: 8px;
+        flex-wrap: wrap;
+    }
+
+    .error {
+        color: #ff3c3c;
+        background: #ff3c3c11;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ff3c3c44;
+    }
+
+    .terminal button {
+        background: none;
+        color: #00ff9c;
+        border: 1px solid #00ff7f44;
+        border-radius: 8px;
+        padding: 8px 16px;
+        cursor: pointer;
+        box-shadow: 0 0 15px #00ff7f22;
+        transition: all 0.3s ease;
+        font-family: inherit;
+        font-size: 0.9em;
+    }
+
+    .terminal button:hover {
+        box-shadow: 0 0 25px #00ff7f44;
+        border-color: #00ff7f66;
+        background: #00ff7f11;
+    }
+
+    .typewriter {
+        min-height: 1.2em;
+    }
+
+    .typewriter.typing {
+        border-right: 2px solid #00ff9c;
+        padding-right: 4px;
+        animation: blinkCursor 0.7s step-end infinite;
+    }
+
+    @keyframes blinkCursor {
+        50% { border-right-color: transparent; }
+    }
+
+    .button-group {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin: 15px 0;
+    }
+
+    @media (max-width: 600px) {
+        .terminal {
+            max-width: 100%;
+        }
+
+        .product-card {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .product-img {
+            width: 120px;
+            height: 120px;
+        }
+
+        .input-section {
+            flex-direction: column;
+        }
+
+        input {
+            min-width: 100%;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div class="terminal">
+    <h2>🛒 Product Terminal</h2>
+    <p>Enter Product ID and press Enter:</p>
+    
+    <div class="input-section">
+        <input type="text" id="productInput" placeholder="e.g. P001">
+        <button type="button" id="searchBtn">Search</button>
+    </div>
+    
+    <div class="output" id="output"></div>
+
+    <hr style="border: 1px solid #00ff7f44; margin: 20px 0;">
+    
+    <p>💳 Complete Purchase:</p>
+    <div class="input-section">
+        <input type="text" id="amountInput" placeholder="Enter Amount">
+        <button type="button" id="purchaseBtn">Purchase 🛒</button>
+    </div>
+</div>
+
+<script>
+const products = {
+    "P001": {
+        name: "Wireless Headphones",
+        price: "$49.99",
+        image: "https://via.placeholder.com/150/00ff9c/000000?text=Headphones"
+    },
+    "P002": {
+        name: "Smart Watch",
+        price: "$79.99",
+        image: "https://via.placeholder.com/150/00ff9c/000000?text=Smart+Watch"
+    },
+    "P003": {
+        name: "Gaming Mouse",
+        price: "$29.99",
+        image: "https://via.placeholder.com/150/00ff9c/000000?text=Mouse"
+    }
+};
+
+const input = document.getElementById("productInput");
+const output = document.getElementById("output");
+const searchBtn = document.getElementById("searchBtn");
+const purchaseBtn = document.getElementById("purchaseBtn");
+const amountInput = document.getElementById("amountInput");
+
+let currentTypewriterTimeout;
+
+function typewriterEffect(element, text, speed = 50, callback = null) {
+    clearTimeout(currentTypewriterTimeout);
+    element.textContent = '';
+    element.classList.add('typing');
+    
+    let index = 0;
+
+    function type() {
+        if (index < text.length) {
+            element.textContent += text.charAt(index);
+            index++;
+            currentTypewriterTimeout = setTimeout(type, speed);
+        } else {
+            element.classList.remove('typing');
+            if (callback) callback();
+        }
+    }
+
+    type();
+}
+
+function displayProductWithTypewriter(id) {
+    const product = products[id];
+    
+    output.innerHTML = `
+        <div class="product-card">
+            <div class="product-img-container">
+                <img src="${product.image}" class="product-img" alt="${product.name}">
+            </div>
+            <div class="product-info">
+                <div class="product-title">
+                    <h3 class="typewriter" id="productName"></h3>
+                </div>
+                <div class="product-details">
+                    <span class="price typewriter" id="productPrice"></span>
+                    <div class="product-id">
+                        <span class="typewriter" id="productId"></span>
+                        <span class="copy-icon" title="Copy ID" onclick="copyToClipboard('${id}')">📋</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    `;
+
+    const nameEl = document.getElementById('productName');
+    typewriterEffect(nameEl, product.name, 50, () => {
+        const priceEl = document.getElementById('productPrice');
+        typewriterEffect(priceEl, `Price: ${product.price}`, 40, () => {
+            const idEl = document.getElementById('productId');
+            typewriterEffect(idEl, `#${id}`, 40);
+        });
+    });
+}
+
+function searchProduct() {
+    const id = input.value.trim().toUpperCase();
+    
+    if (!id) {
+        output.innerHTML = `<p class="error">❌ Please enter a Product ID (P001, P002, P003)</p>`;
+        return;
+    }
+    
+    if (products[id]) {
+        displayProductWithTypewriter(id);
+    } else {
+        output.innerHTML = `<p class="error">❌ Product not found. Check the ID and try again.</p>`;
+    }
+    input.value = "";
+}
+
+function processPurchase() {
+    const amount = amountInput.value.trim();
+    
+    if (!amount) {
+        output.innerHTML = `<p class="error">❌ Please enter an amount</p>`;
+        return;
+    }
+
+    output.innerHTML = `<p class="typewriter" id="purchaseMessage"></p>`;
+    const msg = document.getElementById('purchaseMessage');
+    typewriterEffect(msg, `Processing payment of ${amount}... ✓ Purchase Complete!`, 40);
+    
+    amountInput.value = "";
+}
+
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        alert(`Copied: ${text}`);
+    });
+}
+
+input.addEventListener("keypress", function(e) {
+    if (e.key === "Enter") {
+        searchProduct();
+    }
+});
+
+amountInput.addEventListener("keypress", function(e) {
+    if (e.key === "Enter") {
+        processPurchase();
+    }
+});
+
+searchBtn.addEventListener("click", searchProduct);
+purchaseBtn.addEventListener("click", processPurchase);
+</script>
+
+</body>
+</html>

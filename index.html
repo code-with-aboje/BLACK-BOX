@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BlackBox </title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="background-grid"></div>
+
+  <!-- Rotating 3D Box -->
+  <div class="cube">
+    <div class="face front">
+    </div>
+    <div class="face back"></div>
+    <div class="face right"></div>
+    <div class="face left"></div>
+    <div class="face top"></div>
+    <div class="face bottom"></div>
+  </div>
+<div class="projection"></div>
+  <!-- Floating particles -->
+
+  
+<h1 class="blackbox-title">
+  <span class="black">Black</span><span class="box">Box</span>
+</h1>
+
+<p class="intro-text" id="typewriter"></p>
+<br>
+<br>
+
+<button id="enterBtn" onclick="nextPage()" style="margin-top: 6%;">Join blackBox</button>
+<style>
+  body {
+  margin: 0;
+  height: 100vh;
+  background: radial-gradient(black, #050505);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 800px;
+}
+
+/* Grid background */
+.background-grid {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(white 1px, transparent 1px),
+   linear-gradient(90deg, white 1px, transparent 1px);
+  background-size: 80px 80px;
+  opacity: 0.05;
+  z-index: 0;
+}
+
+/* 3D cube */
+.cube {
+  position: relative;
+  top: -150px; /* Lifts the cube up */
+  width: 100px;
+  height: 100px;
+  transform-style: preserve-3d;
+  animation: cube-rotate 10s infinite linear;
+  z-index: 2;
+}
+
+.face {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: black;
+  border: 2px solid white;
+  box-shadow: 0 0 20px white;
+  color:white;
+}
+
+.front  { transform: translateZ(50px); }
+.back   { transform: rotateY(180deg) translateZ(50px); }
+.right  { transform: rotateY(90deg) translateZ(50px); }
+.left   { transform: rotateY(-90deg) translateZ(50px); }
+.top    { transform: rotateX(90deg) translateZ(50px); }
+.bottom { transform: rotateX(-90deg) translateZ(50px); }
+
+@keyframes cube-rotate {
+  0% { transform: rotateX(0) rotateY(0); }
+  25% { transform: rotateX(90deg) rotateY(180deg); }
+  50% { transform: rotateX(180deg) rotateY(270deg); }
+  75% { transform: rotateX(270deg) rotateY(90deg); }
+  100% { transform: rotateX(360deg) rotateY(360deg); }
+}
+
+/* Particles */
+.particles {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: float 10s infinite linear;
+  box-shadow: 0 0 10px white;
+}
+/* Projection light beam */
+.projection {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 160px;
+  height: 160px;
+  background: radial-gradient(circle, rgba(255,255,255,0.5) 0%, transparent 70%);
+  transform: translate(-50%, -20%) rotateX(90deg);
+  filter: blur(40px);
+  opacity: 0.6;
+  animation: beamPulse 2s infinite ease-in-out;
+  z-index: 0;
+}
+
+@keyframes beamPulse {
+  0%, 100% { opacity: 0.4; transform: translate(-50%, -20%) rotateX(90deg) scale(1); }
+  50% { opacity: 0.8; transform: translate(-50%, -20%) rotateX(90deg) scale(1.2); }
+}
+
+/* Optional: a few vertical light shafts */
+.projection {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, transparent 80%);
+  transform: translate(-50%, -50%) rotateX(90deg);
+  filter: blur(50px);
+  opacity: 0.6;
+  animation: beamPulse 2.5s infinite ease-in-out;
+  z-index: 0;
+}
+
+.projection::after {
+  left: 48%;
+  opacity: 0.6;
+}
+
+@keyframes beamFlicker {
+  from { opacity: 0.3; }
+  to { opacity: 0.7; }
+}
+@keyframes float {
+  from { transform: translateY(100vh) scale(0.5); opacity: 0.3; }
+  to { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+}
+
+.blackbox-title {
+  font-family: 'Orbitron', sans-serif;
+  position: absolute;
+  top:50%; /* lowered to sit below the cube */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 60px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+/* Better visible “Black” text */
+.blackbox-title .black {
+  color: #b1b2be; /* visible gray */
+  text-shadow:
+    1px 1px 2px #333,
+    2px 2px 4px #222,
+    3px 3px 6px rgba(0, 0, 0, 0.6);
+}
+
+/* Green “Box” text with 3D depth */
+.blackbox-title .box {
+  color: #00ff7f;
+  text-shadow:
+    1px 1px 2px #007a3d,
+    2px 2px 4px #006633,
+    3px 3px 6px rgba(0, 0, 0, 0.6);
+}
+
+/* Typewriter intro text */
+.intro-text {
+  position: absolute;
+  top: 65%; /* just below the title */
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 18px;
+  color: #bfbfbf;
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 1px;
+  text-align: center;
+  width:400px;
+  white-space: pre-line;
+  border-right: 3px solid #00ff7f;
+  animation: blinkCursor 0.7s steps(1) infinite;
+}
+.red-word {
+  color: red;
+}
+/* Blinking cursor */
+@keyframes blinkCursor {
+  50% { border-color: transparent; }
+}
+
+
+#enterBtn {
+  display: none; /* hidden initially */
+  position: absolute;
+  top: 78%; /* adjust as needed */
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 28px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #00ff7f; /* neon green text for visibility */
+  background: transparent; /* fully transparent background */
+  border: 2px solid #00ff7f; /* outline to make it visible */
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.3s, background 0.3s, color 0.3s;
+  font-family: 'Orbitron', sans-serif;
+}
+
+#enterBtn:hover {
+  transform: translateX(-50%) scale(1.05);
+  background: rgba(0, 255, 127, 0.1); /* slight transparent hover effect */
+  color: #00ffcc; /* subtle color change on hover */
+}
+</style>
+  <script>
+  
+// Intro text split into parts for typing effect
+const textParts = [
+  'Shadows move in code...\nEnter BlackBox — where ',
+  '<span style="color:red;">secrets</span>',
+  ' become power...\n built by devs for devs'
+];
+
+let partIndex = 0;
+const element = document.getElementById("typewriter");
+const btn = document.getElementById("enterBtn");
+const speed = 80;
+
+function typeEffect() {
+  if (partIndex < textParts.length) {
+    const part = textParts[partIndex];
+
+    // If part contains HTML, add it immediately
+    if (/<.*?>/.test(part)) {
+      element.innerHTML += part;
+      partIndex++;
+      setTimeout(typeEffect, speed);
+    } else {
+      // Type character by character
+      let charIndex = 0;
+      function typeChar() {
+        if (charIndex < part.length) {
+          element.innerHTML += part.charAt(charIndex);
+          charIndex++;
+          setTimeout(typeChar, speed);
+        } else {
+          partIndex++;
+          setTimeout(typeEffect, speed);
+        }
+      }
+      typeChar();
+    }
+  } else {
+    element.style.borderRight = "none"; // remove cursor after typing
+    btn.style.display = "inline-block"; // show button
+  }
+}
+
+window.onload = () => setTimeout(typeEffect, 1000);
+
+function nextPage(){
+  window.location.href = "homepage.html";
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+// Save user data to database
+            await set(ref(db, `users/${user.uid}`), {
+              nickname: userData.nickname,
+              email: userData.email,
+              gender: userData.gender,
+              role: userData.role,
+              avatar: userData.avatarPath,
+              createdAt: new Date().toISOString()
+            });
+
+
+            
