@@ -1,4 +1,4 @@
-* {
+I'll* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -112,6 +112,7 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 24px;
+  padding-bottom:150px;
 }
 
 .user-card {
@@ -366,3 +367,4 @@ body {
     font-size: 0.85em;
   }
 }
+
